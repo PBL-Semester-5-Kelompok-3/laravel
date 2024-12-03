@@ -1,0 +1,51 @@
+name: Deploy Laravel via SFTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Upload files via SFTP
+        uses: appleboy/scp-action@v0.1.1
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 6401
+          source: "./"
+          target: "/home/njczidlb/tomascan.nurulmustofa.my.id"
+          rm: true
+
+      - name: SSH into server and set up Laravel
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 6401
+          script: |
+            cd /home/njczidlb/tomascan.nurulmustofa.my.id
+            composer install
+            cp .env.example .env
+            # Update DB_CONNECTION to mysql and uncomment DB settings
+            sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
+            sed -i 's/# DB_HOST=.*/DB_HOST=109.110.188.7/' .env
+            sed -i 's/# DB_DATABASE=.*/DB_DATABASE=dfvosxil_swap_academy/' .env
+            sed -i 's/# DB_USERNAME=.*/DB_USERNAME=dfvosxil_wp_kkla8/' .env
+            sed -i 's/# DB_PASSWORD=.*/DB_PASSWORD=nioke8090/' .env
+            sed -i 's/# DB_PORT=.*/DB_PORT=3306/' .env
+            echo 'RewriteEngine On
+            RewriteCond %{REQUEST_URI} !^/public/
+            RewriteRule ^(.*)$ /public/$1 [L,QSA]' > /home/njczidlb/tomascan.nurulmustofa.my.id/.htaccess
+            php artisan key:generate
+            php artisan jwt:secret --force
+            php artisan migrate:fresh --seed
+            php artisan storage:link
+            php artisan l5-swagger:generate
