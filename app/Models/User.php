@@ -27,6 +27,16 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'id_user', 'user_id');
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(History::class, 'id_user', 'user_id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
