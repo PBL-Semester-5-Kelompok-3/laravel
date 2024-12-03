@@ -36,11 +36,11 @@ jobs:
             cp .env.example .env
             # Update DB_CONNECTION to mysql and uncomment DB settings
             sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
-            sed -i 's/# DB_HOST=.*/DB_HOST=109.110.188.74/' .env
-            sed -i 's/# DB_DATABASE=.*/DB_DATABASE=njczidlb_tomascan/' .env
-            sed -i 's/# DB_USERNAME=.*/DB_USERNAME=njczidlb_nioke/' .env
-            sed -i 's/# DB_PASSWORD=.*/DB_PASSWORD=nioke8090/' .env
-            sed -i 's/# DB_PORT=.*/DB_PORT=3306/' .env
+            sed -i 's/DB_HOST=.*/DB_HOST=109.110.188.74/' .env
+            sed -i 's/DB_DATABASE=.*/DB_DATABASE=njczidlb_tomascan/' .env
+            sed -i 's/DB_USERNAME=.*/DB_USERNAME=njczidlb_nioke/' .env
+            sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=nioke8090/' .env
+            sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
             echo 'RewriteEngine On
             RewriteCond %{REQUEST_URI} !^/public/
             RewriteRule ^(.*)$ /public/$1 [L,QSA]' > /home/njczidlb/tomascan.nurulmustofa.my.id/.htaccess
