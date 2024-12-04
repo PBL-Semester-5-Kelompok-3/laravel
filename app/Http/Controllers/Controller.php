@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 /**
  * @OA\OpenApi(
  *     @OA\Info(title="Tomato Scan API Documentation", version="1.0"),
- *     @OA\Server(url="http://127.0.0.1:8000"),
+ *     @OA\Server(url="tomascan.nurulmustofa.my.id"),
  *     @OA\Components(
  *         @OA\SecurityScheme(
  *             securityScheme="Bearer",
@@ -16,7 +16,6 @@ namespace App\Http\Controllers;
  *     )
  * )
  */
-abstract class Controller
-{
-    //
+abstract class Controller {
+    
 }
