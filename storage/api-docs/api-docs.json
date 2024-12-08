@@ -6,7 +6,12 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8000"
+            "url": "tomascan.nurulmustofa.my.id",
+            "description": "Production Server"
+        },
+        {
+            "url": "http://localhost:8000",
+            "description": "Localhost Server"
         }
     ],
     "paths": {
@@ -102,7 +107,7 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Send reset password link",
+                "summary": "Send reset password OTP to email",
                 "operationId": "7af8817e88ba5874543ff38f188248f1",
                 "requestBody": {
                     "required": true,
@@ -125,10 +130,13 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Reset link sent to your email."
+                        "description": "OTP sent to your email."
+                    },
+                    "404": {
+                        "description": "Email not found."
                     },
                     "500": {
-                        "description": "Unable to send reset link."
+                        "description": "Unable to send OTP."
                     }
                 }
             }
@@ -138,7 +146,7 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Reset password",
+                "summary": "Reset user password using OTP",
                 "operationId": "00c0aad74830221c6da409a1355ec736",
                 "requestBody": {
                     "required": true,
@@ -147,7 +155,7 @@
                             "schema": {
                                 "required": [
                                     "email",
-                                    "token",
+                                    "otp",
                                     "password",
                                     "password_confirmation"
                                 ],
@@ -156,9 +164,9 @@
                                         "type": "string",
                                         "example": "johndoe@example.com"
                                     },
-                                    "token": {
+                                    "otp": {
                                         "type": "string",
-                                        "example": "reset_token"
+                                        "example": "902520"
                                     },
                                     "password": {
                                         "type": "string",
@@ -178,8 +186,58 @@
                     "200": {
                         "description": "Password successfully reset."
                     },
+                    "400": {
+                        "description": "Invalid or expired OTP."
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
                     "500": {
                         "description": "Failed to reset password."
+                    }
+                }
+            }
+        },
+        "/api/verify-otp": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Verify OTP for password reset",
+                "operationId": "7809ddcd47cab2525ccd43d1c2031bfd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "example": "902520"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP verified successfully."
+                    },
+                    "400": {
+                        "description": "Invalid or expired OTP."
+                    },
+                    "404": {
+                        "description": "Email not found."
                     }
                 }
             }
