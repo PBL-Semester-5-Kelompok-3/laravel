@@ -30,7 +30,7 @@ class AuthController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=201, description="User registered successfully"),
-     *     @OA\Response(response=400, description="Validation error")
+     *     @OA\Response(response=422, description="Validation error")
      * )
      */
     public function register(Request $request)
@@ -41,12 +41,11 @@ class AuthController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        // Jika validasi gagal
         if ($validator->fails()) {
             return response()->json([
                 'error' => 'Validation error',
                 'message' => $validator->errors()
-            ], 422);  // Menggunakan 422 (Unprocessable Entity) untuk kesalahan validasi
+            ], 422); // Menggunakan 422 (Unprocessable Entity) untuk kesalahan validasi
         }
 
         // Membuat user baru jika validasi berhasil
@@ -56,14 +55,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Mengembalikan response sukses dengan data user
         return response()->json([
             'message' => 'User registered successfully.',
             'data' => $user
         ], 201);
     }
-
-
     /**
      * @OA\Post(
      *     path="/api/login",
@@ -78,7 +74,8 @@ class AuthController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=200, description="User logged in successfully"),
-     *     @OA\Response(response=401, description="Unauthorized")
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=422, description="Validation error")
      * )
      */
     public function login(Request $request)
@@ -89,7 +86,10 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            return response()->json([
+                'error' => 'Validation error',
+                'message' => $validator->errors()
+            ], 422); // Menggunakan 422 (Unprocessable Entity) untuk kesalahan validasi
         }
 
         $credentials = $request->only('email', 'password');
@@ -115,13 +115,21 @@ class AuthController extends Controller
      *     ),
      *     @OA\Response(response=200, description="OTP sent to your email."),
      *     @OA\Response(response=404, description="Email not found."),
-     *     @OA\Response(response=500, description="Unable to send OTP.")
+     *     @OA\Response(response=422, description="Validation error")
      * )
      */
-
     public function forgotPassword(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => 'Validation error',
+                'message' => $validator->errors()
+            ], 422); // Menggunakan 422 (Unprocessable Entity) untuk kesalahan validasi
+        }
 
         // Mengecek apakah email ada di database
         $user = User::where('email', $request->email)->first();
@@ -130,14 +138,14 @@ class AuthController extends Controller
             return response()->json(['error' => 'Email not found.'], 404);
         }
 
-        // Generate OTP 6 digit
+        // Generate OTP 4 digit
         $otp = rand(1000, 9999);
 
         // Menyimpan OTP dalam cache selama 10 menit
         Cache::put('otp_' . $user->email, $otp, 600); // 600 detik = 10 menit
 
         // Kirim OTP via email
-        Mail::to($user->email)->send(new HelloMail($user->name, $otp));
+        Mail::to($user->email)->send(new HelloMail($user->username, $otp));
 
         return response()->json(['message' => 'OTP sent to your email.']);
     }
@@ -160,17 +168,23 @@ class AuthController extends Controller
      *     @OA\Response(response=200, description="Password successfully reset."),
      *     @OA\Response(response=400, description="Invalid or expired OTP."),
      *     @OA\Response(response=404, description="User not found."),
-     *     @OA\Response(response=500, description="Failed to reset password.")
+     *     @OA\Response(response=422, description="Validation error")
      * )
      */
-
     public function resetPassword(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'otp' => 'required|numeric|digits:6',  // Validasi OTP
+            'otp' => 'required|numeric|digits:4',  // Validasi OTP 4 digit
             'password' => 'required|string|confirmed|min:8',  // Validasi password
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => 'Validation error',
+                'message' => $validator->errors()
+            ], 422); // Menggunakan 422 (Unprocessable Entity) untuk kesalahan validasi
+        }
 
         // Ambil OTP yang disimpan di cache
         $cachedOtp = Cache::get('otp_' . $request->email);
@@ -195,7 +209,6 @@ class AuthController extends Controller
         // Menghapus OTP dari cache setelah digunakan
         Cache::forget('otp_' . $request->email);
 
-        // Kembalikan response sukses setelah password berhasil direset
         return response()->json(['message' => 'Password successfully reset.']);
     }
 
@@ -214,18 +227,25 @@ class AuthController extends Controller
      *     ),
      *     @OA\Response(response=200, description="OTP verified successfully."),
      *     @OA\Response(response=400, description="Invalid or expired OTP."),
-     *     @OA\Response(response=404, description="Email not found.")
+     *     @OA\Response(response=404, description="Email not found."),
+     *     @OA\Response(response=422, description="Validation error")
      * )
      */
-
     public function verifyOtp(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'otp' => 'required|numeric|digits:6',  // Validasi OTP 6 digit
+            'otp' => 'required|numeric|digits:4',
         ]);
 
-        // Ambil OTP yang disimpan di cache dengan key berdasarkan email
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => 'Validation error',
+                'message' => $validator->errors()
+            ], 422); // Menggunakan 422 (Unprocessable Entity) untuk kesalahan validasi
+        }
+
+        // Ambil OTP yang disimpan di cache
         $cachedOtp = Cache::get('otp_' . $request->email);
 
         // Cek apakah OTP tidak ada atau telah kedaluwarsa
@@ -238,11 +258,8 @@ class AuthController extends Controller
             return response()->json(['error' => 'Invalid OTP.'], 400);
         }
 
-        // Jika OTP valid, kembalikan respon sukses
         return response()->json(['message' => 'OTP verified successfully.']);
     }
-
-
 
     /**
      * @OA\Post(

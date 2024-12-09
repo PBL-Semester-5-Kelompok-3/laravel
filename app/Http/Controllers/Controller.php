@@ -9,10 +9,6 @@ namespace App\Http\Controllers;
  *          url="tomascan.nurulmustofa.my.id",
  *          description="Production Server"
  *      ),
- *     @OA\Server(
- *         url="http://localhost:8000",
- *         description="Localhost Server"
- *     ),
  *     @OA\Components(
  *         @OA\SecurityScheme(
  *             securityScheme="Bearer",
