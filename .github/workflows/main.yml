@@ -41,6 +41,14 @@ jobs:
             sed -i 's/DB_USERNAME=.*/DB_USERNAME=njczidlb_nioke/' .env
             sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=nioke8090/' .env
             sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
+            # Set up email configuration directly
+            sed -i 's/MAIL_MAILER=.*/MAIL_MAILER=smtp/' .env
+            sed -i 's/MAIL_HOST=.*/MAIL_HOST=smtp.gmail.com/' .env
+            sed -i 's/MAIL_PORT=.*/MAIL_PORT=587/' .env
+            sed -i 's/MAIL_USERNAME=.*/MAIL_USERNAME=nioke8090@gmail.com/' .env
+            sed -i 's/MAIL_PASSWORD=.*/MAIL_PASSWORD=opaqpfinaugjpbfw/' .env
+            sed -i 's/MAIL_ENCRYPTION=.*/MAIL_ENCRYPTION=tls/' .env
+            sed -i 's/MAIL_FROM_ADDRESS=.*/MAIL_FROM_ADDRESS="nioke8090@gmail.com"/' .env
             echo 'RewriteEngine On
             RewriteCond %{REQUEST_URI} !^/public/
             RewriteRule ^(.*)$ /public/$1 [L,QSA]' > /home/njczidlb/tomascan.nurulmustofa.my.id/.htaccess
