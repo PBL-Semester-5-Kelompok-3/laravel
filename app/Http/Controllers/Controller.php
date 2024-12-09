@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
  * @OA\OpenApi(
  *     @OA\Info(title="Tomato Scan API Documentation", version="1.0"),
  *     @OA\Server(
- *          url="tomascan.nurulmustofa.my.id",
+ *          url="https://tomascan.nurulmustofa.my.id",
  *          description="Production Server"
  *      ),
  *     @OA\Components(
