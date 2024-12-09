@@ -131,7 +131,7 @@ class AuthController extends Controller
         }
 
         // Generate OTP 6 digit
-        $otp = rand(100000, 999999);
+        $otp = rand(1000, 9999);
 
         // Menyimpan OTP dalam cache selama 10 menit
         Cache::put('otp_' . $user->email, $otp, 600); // 600 detik = 10 menit
