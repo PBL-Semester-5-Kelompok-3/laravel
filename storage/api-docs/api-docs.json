@@ -6,8 +6,12 @@
     },
     "servers": [
         {
-            "url": "tomascan.nurulmustofa.my.id",
+            "url": "https://tomascan.nurulmustofa.my.id",
             "description": "Production Server"
+        },
+        {
+            "url": "https://localhost:8000",
+            "description": "localhost Server"
         }
     ],
     "paths": {
