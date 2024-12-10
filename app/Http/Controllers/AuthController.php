@@ -96,7 +96,7 @@ class AuthController extends Controller
 
         if ($token = JWTAuth::attempt($credentials)) {
             $user = JWTAuth::user();
-            return response()->json(['token' => $token, 'user', [
+            return response()->json(['token' => $token, 'user' => [
                 'id' => $user->id,
                 'username' => $user->username,
                 'email' => $user->email,
