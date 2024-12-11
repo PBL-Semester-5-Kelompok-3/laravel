@@ -275,7 +275,7 @@ class AuthController extends Controller
      *     tags={"Authentication"},
      *     summary="Logout user",
      *     description="Logout the authenticated user and invalidate the token.",
-     *     security={{"bearerAuth": {}}},  
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="Successfully logged out",
@@ -298,21 +298,28 @@ class AuthController extends Controller
     {
         try {
             // Mendapatkan token dari header Authorization
-            $token = $request->bearerToken();
+            // $token = $request->bearerToken();
 
             // Jika token tidak ada, kembalikan respons 401
-            if (!$token) {
-                return response()->json(['message' => 'Token is missing'], 401);
-            }
+            // if (!$token) {
+            //     return response()->json(['message' => 'Token is missing'], 401);
+            // }
 
             // Invalidate token
-            JWTAuth::invalidate($token);
+            $removeToken = JWTAuth::invalidate(JWTAuth::getToken());
+            if ($removeToken) {
+                //return response JSON
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Logout Berhasil!',
+                ], 200);
+            }
 
-            return response()->json(['message' => 'Successfully logged out'], 200);
+            // return response()->json(['message' => 'Successfully logged out'], 200);
         } catch (TokenInvalidException $e) {
             return response()->json(['message' => 'Token is invalid'], 401);
         } catch (JWTException $e) {
-            return response()->json(['message' => 'An error occurred while trying to logout'], 500);
+            return response()->json(['message' => 'An error occurred while trying to logout',], 500);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace App\Http\Controllers;
  *         description="Production Server"
  *     ),
  *     @OA\Server(
- *         url="https://localhost:8000",
+ *         url="http://localhost:8000",
  *         description="localhost Server"
  *     ),
  *     @OA\Components(
