@@ -32,8 +32,6 @@ class InformatifSeeder extends Seeder
                 'title' => $faker->sentence, // Menggunakan Faker untuk generate title acak
                 'type' => $type,
                 'content' => 'https://picsum.photos/800/600?random=' . rand(1, 1000), // Mengambil gambar acak dari web
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
         }
     }
