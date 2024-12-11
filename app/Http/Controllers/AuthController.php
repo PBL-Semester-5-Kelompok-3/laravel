@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class AuthController extends Controller
 {
@@ -272,12 +274,41 @@ class AuthController extends Controller
      *     path="/api/logout",
      *     tags={"Authentication"},
      *     summary="Logout user",
-     *     @OA\Response(response=200, description="Successfully logged out")
+     *     description="Logout the authenticated user and invalidate the token.",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successfully logged out",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Successfully logged out")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized - Invalid or missing token",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Token is invalid or missing")
+     *         )
+     *     )
      * )
      */
     public function logout()
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
-        return response()->json(['message' => 'Successfully logged out']);
+        try {
+            // Check if token exists and invalidate it
+            $token = JWTAuth::getToken();
+            if (!$token) {
+                return response()->json(['message' => 'Token is missing'], 401);
+            }
+
+            JWTAuth::invalidate($token);
+
+            return response()->json(['message' => 'Successfully logged out'], 200);
+        } catch (TokenInvalidException $e) {
+            return response()->json(['message' => 'Token is invalid'], 401);
+        } catch (JWTException $e) {
+            return response()->json(['message' => 'An error occurred while trying to logout'], 500);
+        }
     }
 }
