@@ -275,6 +275,7 @@ class AuthController extends Controller
      *     tags={"Authentication"},
      *     summary="Logout user",
      *     description="Logout the authenticated user and invalidate the token.",
+     *     security={{"bearerAuth": {}}},  
      *     @OA\Response(
      *         response=200,
      *         description="Successfully logged out",
@@ -293,15 +294,18 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function logout()
+    public function logout(Request $request)
     {
         try {
-            // Check if token exists and invalidate it
-            $token = JWTAuth::getToken();
+            // Mendapatkan token dari header Authorization
+            $token = $request->bearerToken();
+
+            // Jika token tidak ada, kembalikan respons 401
             if (!$token) {
                 return response()->json(['message' => 'Token is missing'], 401);
             }
 
+            // Invalidate token
             JWTAuth::invalidate($token);
 
             return response()->json(['message' => 'Successfully logged out'], 200);

@@ -254,20 +254,56 @@
                     "Authentication"
                 ],
                 "summary": "Logout user",
+                "description": "Logout the authenticated user and invalidate the token.",
                 "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
                 "responses": {
                     "200": {
-                        "description": "Successfully logged out"
+                        "description": "Successfully logged out",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully logged out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid or missing token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Token is invalid or missing"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
     "components": {
         "securitySchemes": {
-            "Bearer": {
+            "bearerAuth": {
                 "type": "http",
-                "description": "Enter your bearer token below. Example: `Bearer your.jwt.token`",
+                "description": "Enter your bearer token in the format: Bearer <your-token>",
+                "bearerFormat": "JWT",
                 "scheme": "bearer"
             }
         }
