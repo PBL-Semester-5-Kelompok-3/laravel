@@ -296,9 +296,296 @@
                     }
                 ]
             }
+        },
+        "/api/informatifs": {
+            "get": {
+                "tags": [
+                    "Informatif"
+                ],
+                "summary": "Get all informatifs",
+                "description": "Retrieve a list of all informatifs",
+                "operationId": "indexInformatifs",
+                "responses": {
+                    "200": {
+                        "description": "List of informatifs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Informatif"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Informatif"
+                ],
+                "summary": "Create a new Informatif",
+                "description": "Create a new informatifs with an image",
+                "operationId": "storeInformatif",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "type",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Tomato Planting Tips"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "Planting"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Informatif created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Informatif created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Informatif"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/informatifs/{id}": {
+            "get": {
+                "tags": [
+                    "Informatif"
+                ],
+                "summary": "Get a single informatifs",
+                "description": "Retrieve details of a specific informatifs by its ID",
+                "operationId": "showInformatif",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Informatif details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Informatif"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Informatif not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Informatif"
+                ],
+                "summary": "Update an existing Informatif",
+                "description": "Update the informatifs by its ID",
+                "operationId": "updateInformatif",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Updated Tomato Planting Tips"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "Planting"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Informatif updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Informatif updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Informatif"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Informatif"
+                ],
+                "summary": "Delete an Informatif",
+                "description": "Delete a specific informatifs by its ID",
+                "operationId": "destroyInformatif",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Informatif deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Informatif deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Informatif not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
+        "schemas": {
+            "Informatif": {
+                "required": [
+                    "id",
+                    "title",
+                    "type",
+                    "content"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Tomato Planting Tips"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "Planting"
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "informatif_image.jpg"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
@@ -312,6 +599,10 @@
         {
             "name": "Authentication",
             "description": "Authentication"
+        },
+        {
+            "name": "Informatif",
+            "description": "Informatif"
         }
     ]
 }
