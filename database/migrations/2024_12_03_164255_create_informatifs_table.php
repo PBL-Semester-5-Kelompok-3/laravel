@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('type');
             $table->String('content');
+            $table->String('image');
             $table->timestamp('created_at')->useCurrent();
         });
     }

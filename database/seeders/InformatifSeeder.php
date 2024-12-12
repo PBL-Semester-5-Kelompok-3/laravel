@@ -31,7 +31,8 @@ class InformatifSeeder extends Seeder
             DB::table('informatifs')->insert([
                 'title' => $faker->sentence, // Menggunakan Faker untuk generate title acak
                 'type' => $type,
-                'content' => 'https://picsum.photos/800/600?random=' . rand(1, 1000), // Mengambil gambar acak dari web
+                'content' => $faker->sentence((20)),
+                'image' => 'https://picsum.photos/800/600?random=' . rand(1, 1000), // Mengambil gambar acak dari web
             ]);
         }
     }
