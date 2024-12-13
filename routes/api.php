@@ -34,9 +34,9 @@ Route::middleware('jwt.verify')->group(function () {
 
 
 Route::middleware('jwt.verify')->group(function () {
-    Route::get('/api/pests-and-diseases', [PestdeseaseController::class, 'index']);
-    Route::post('/api/pests-and-diseases', [PestdeseaseController::class, 'store']);
-    Route::get('/api/pests-and-diseases/{id}', [PestdeseaseController::class, 'show']);
-    Route::put('/api/pests-and-diseases/{id}', [PestdeseaseController::class, 'update']);
-    Route::delete('/api/pests-and-diseases/{id}', [PestdeseaseController::class, 'destroy']);
+    Route::get('/pests-and-diseases', [PestdeseaseController::class, 'index']);
+    Route::post('/pests-and-diseases', [PestdeseaseController::class, 'store']);
+    Route::get('/pests-and-diseases/{id}', [PestdeseaseController::class, 'show']);
+    Route::put('/pests-and-diseases/{id}', [PestdeseaseController::class, 'update']);
+    Route::delete('/pests-and-diseases/{id}', [PestdeseaseController::class, 'destroy']);
 });
