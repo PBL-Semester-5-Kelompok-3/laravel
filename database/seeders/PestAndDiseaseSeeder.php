@@ -26,7 +26,7 @@ class PestAndDiseaseSeeder extends Seeder
                 'aliases' => $faker->words(3, true),
                 'symptoms' => $faker->sentences(3, true),
                 'solutions' => json_encode([$faker->sentence, $faker->sentence, $faker->sentence]),
-                'source' => $faker->url,
+                'source' => 'https://picsum.photos/800/600?random=' . rand(1, 1000),
             ]);
         }
     }
