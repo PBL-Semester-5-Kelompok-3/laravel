@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InformatifController;
+use App\Http\Controllers\PestdeseaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +30,13 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Route to delete an informatif by ID
     Route::delete('/informatifs/{id}', [InformatifController::class, 'destroy']);
+});
+
+
+Route::middleware('jwt.verify')->group(function () {
+    Route::get('/api/pests-and-diseases', [PestdeseaseController::class, 'index']);
+    Route::post('/api/pests-and-diseases', [PestdeseaseController::class, 'store']);
+    Route::get('/api/pests-and-diseases/{id}', [PestdeseaseController::class, 'show']);
+    Route::put('/api/pests-and-diseases/{id}', [PestdeseaseController::class, 'update']);
+    Route::delete('/api/pests-and-diseases/{id}', [PestdeseaseController::class, 'destroy']);
 });

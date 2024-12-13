@@ -554,6 +554,217 @@
                     }
                 ]
             }
+        },
+        "/api/pests-and-diseases": {
+            "get": {
+                "tags": [
+                    "PestAndDisease"
+                ],
+                "summary": "Get all pests and diseases",
+                "description": "Display a listing of the resource.",
+                "operationId": "62978f1cfaab67390742831f797e215a",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "PestAndDisease"
+                ],
+                "summary": "Create a new pest or disease",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "eafab6078f4fc0f63f5d56b234e7195c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "warning": {
+                                        "type": "string"
+                                    },
+                                    "genus": {
+                                        "type": "string"
+                                    },
+                                    "scientific_name": {
+                                        "type": "string"
+                                    },
+                                    "aliases": {
+                                        "type": "string"
+                                    },
+                                    "symptoms": {
+                                        "type": "string"
+                                    },
+                                    "solutions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "source": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/pests-and-diseases/{id}": {
+            "get": {
+                "tags": [
+                    "PestAndDisease"
+                ],
+                "summary": "Get a pest or disease by ID",
+                "description": "Display the specified resource.",
+                "operationId": "23ff29793556a81c90cd53a1c049031d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "PestAndDisease"
+                ],
+                "summary": "Update a pest or disease",
+                "description": "Update the specified resource in storage.",
+                "operationId": "1719efac5c6c03ecd04533b14b31100c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "warning": {
+                                        "type": "string"
+                                    },
+                                    "genus": {
+                                        "type": "string"
+                                    },
+                                    "scientific_name": {
+                                        "type": "string"
+                                    },
+                                    "aliases": {
+                                        "type": "string"
+                                    },
+                                    "symptoms": {
+                                        "type": "string"
+                                    },
+                                    "solutions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "source": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "PestAndDisease"
+                ],
+                "summary": "Delete a pest or disease",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "5bad8db8f70df8b728668269b487f5ee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -603,6 +814,10 @@
         {
             "name": "Informatif",
             "description": "Informatif"
+        },
+        {
+            "name": "PestAndDisease",
+            "description": "PestAndDisease"
         }
     ]
 }
