@@ -329,7 +329,6 @@ class AuthController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             @OA\Property(property="username", type="string", example="NewUsername"),
-     *             @OA\Property(property="email", type="string", example="newemail@example.com"),
      *             @OA\Property(property="password", type="string", example="newpassword123")
      *         )
      *     ),
@@ -358,7 +357,6 @@ class AuthController extends Controller
         // Validasi input
         $validator = Validator::make($request->all(), [
             'username' => 'sometimes|string|max:255|unique:users,username,' . $user->id,
-            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'sometimes|string|min:8',
         ]);
 
@@ -372,10 +370,6 @@ class AuthController extends Controller
         // Memperbarui data pengguna
         if ($request->has('username')) {
             $user->username = $request->username;
-        }
-
-        if ($request->has('email')) {
-            $user->email = $request->email;
         }
 
         if ($request->has('password')) {
@@ -394,5 +388,69 @@ class AuthController extends Controller
                 // Tambahkan atribut lain sesuai kebutuhan
             ]
         ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/{id}",
+     *     tags={"User"},
+     *     summary="Get user by ID",
+     *     description="Retrieve user details based on their ID.",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the user to retrieve",
+     *         @OA\Schema(
+     *             type="integer",
+     *             example=1
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User details retrieved successfully.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="username", type="string", example="JohnDoe"),
+     *             @OA\Property(property="email", type="string", example="johndoe@example.com")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="User not found.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Unauthorized.")
+     *         )
+     *     )
+     * )
+     */
+    public function getUserById($id)
+    {
+        // Cari user berdasarkan ID
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'id' => $user->id,
+            'username' => $user->username,
+            'email' => $user->email,
+            // Tambahkan properti lain jika diperlukan
+        ]);
     }
 }

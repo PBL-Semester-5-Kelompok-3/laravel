@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pest extends Model
 {
+    protected $table = 'pest';
     protected $primaryKey = 'id';
     protected $guarded = [];
     public function disease()

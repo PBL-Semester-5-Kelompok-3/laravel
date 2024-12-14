@@ -16,7 +16,7 @@ class AfterScanController extends Controller
      *     tags={"Scan"},
      *     security={{"bearerAuth": {}}},
      *     summary="Get details of scanned disease",
-     *     description="Retrieve details of a disease including its schedules, solutions, and pests based on the provided disease name.",
+     *     description="Retrieve details of a disease including its schedules, solutions, and pest based on the provided disease name.",
      *     operationId="getAfterScan",
      *     @OA\Parameter(
      *         name="disease",
@@ -30,7 +30,7 @@ class AfterScanController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Disease details including schedules, solutions, and pests",
+     *         description="Disease details including schedules, solutions, and pest",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(
