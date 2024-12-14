@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class AfterScanController extends Controller
 {
     /**
-     * @OA\Get(
+     * @OA\Post(
      *     path="/api/getAfterScan",
      *     tags={"Scan"},
      *     security={{"bearerAuth": {}}},

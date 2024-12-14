@@ -18,7 +18,7 @@ Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::middleware('jwt.verify')->group(function () {
     Route::put('/update-profile', [AuthController::class, 'updateProfile']);
-    Route::put('/getAfterScan', [AfterScanController::class, 'getAfterScan']);
+    Route::post('/getAfterScan', [AfterScanController::class, 'getAfterScan']);
     // Route to get all informatifs
     Route::get('/informatifs', [InformatifController::class, 'index']);
 
