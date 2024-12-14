@@ -15,6 +15,131 @@
         }
     ],
     "paths": {
+        "/api/getAfterScan": {
+            "get": {
+                "tags": [
+                    "Scan"
+                ],
+                "summary": "Get details of scanned disease",
+                "description": "Retrieve details of a disease including its schedules, solutions, and pests based on the provided disease name.",
+                "operationId": "getAfterScan",
+                "parameters": [
+                    {
+                        "name": "disease",
+                        "in": "query",
+                        "description": "Name of the disease to retrieve details for",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Bacterial_spot"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Disease details including schedules, solutions, and pests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "disease": {
+                                            "description": "Name of the disease",
+                                            "type": "string",
+                                            "example": "Bacterial_spot"
+                                        },
+                                        "schedule": {
+                                            "description": "List of schedules related to the disease",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "time": {
+                                                        "type": "string",
+                                                        "example": "07:00 - 09:00"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Penyiraman tanaman secara rutin"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "solutions": {
+                                            "description": "List of solutions related to the disease",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Pemberian Pupuk Organik"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Gunakan pupuk organik untuk meningkatkan kesuburan tanah."
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "pest": {
+                                            "description": "List of pests related to the disease",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Kutu Daun (Aphids)"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Disease not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Disease not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/register": {
             "post": {
                 "tags": [
@@ -887,6 +1012,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Scan",
+            "description": "Scan"
+        },
         {
             "name": "Authentication",
             "description": "Authentication"

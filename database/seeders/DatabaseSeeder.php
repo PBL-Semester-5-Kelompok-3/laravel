@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\pestdesease;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,6 +23,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             InformatifSeeder::class,
             PestAndDiseaseSeeder::class,
+            DiseaseSeeder::class,
+            PestSeeder::class,
+            ScheduleSeeder::class,
+            SolutionsSeeder::class
         ]);
     }
 }

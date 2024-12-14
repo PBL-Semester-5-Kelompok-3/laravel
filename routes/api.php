@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AfterScanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InformatifController;
 use App\Http\Controllers\PestdeseaseController;
@@ -17,6 +18,7 @@ Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::middleware('jwt.verify')->group(function () {
     Route::put('/update-profile', [AuthController::class, 'updateProfile']);
+    Route::put('/getAfterScan', [AfterScanController::class, 'getAfterScan']);
     // Route to get all informatifs
     Route::get('/informatifs', [InformatifController::class, 'index']);
 

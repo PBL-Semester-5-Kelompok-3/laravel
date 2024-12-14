@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('solutions', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->text('keterangan_solution');
             $table->foreignId('id_disease')->constrained('diseases', 'id')->onDelete('cascade');
             $table->timestamps();

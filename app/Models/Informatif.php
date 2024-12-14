@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,6 +9,6 @@ class Informatif extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_informatif';
+    protected $primaryKey = 'id';
     protected $fillable = ['title', 'type', 'content'];
 }

@@ -9,7 +9,7 @@ class Notification extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_notification';
+    protected $primaryKey = 'id';
     protected $fillable = ['id_user', 'title', 'message', 'type', 'scheduled_time'];
 
     public function user()

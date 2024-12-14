@@ -9,7 +9,7 @@ class History extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_history';
+    protected $primaryKey = 'id';
     protected $fillable = ['id_user', 'id_disease', 'label', 'image_path'];
 
     public function user()
