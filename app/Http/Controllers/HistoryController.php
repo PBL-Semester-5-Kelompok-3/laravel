@@ -65,7 +65,16 @@ class HistoryController extends Controller
                 $pests = Pest::where('id_disease', $history->disease->id)->get();
 
                 $result[] = [
-                    'history' => $history,
+                    'history' => [
+                        'id' => $history->id,
+                        'id_user' => $history->id_user,
+                        'id_disease' => $history->id_disease,
+                        'image_path' => asset('storage/' . $history->image_path), // Path lengkap
+                        'created_at' => $history->created_at,
+                        'updated_at' => $history->updated_at,
+                        'user' => $history->user,
+                        'disease' => $history->disease,
+                    ],
                     'schedule' => $schedules,
                     'solutions' => $solutions,
                     'pest' => $pests,
