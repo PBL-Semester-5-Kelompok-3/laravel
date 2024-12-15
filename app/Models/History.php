@@ -14,11 +14,11 @@ class History extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'user_id');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
     public function disease()
     {
-        return $this->belongsTo(Disease::class, 'id_disease', 'id_disease');
+        return $this->belongsTo(Disease::class, 'id_disease', 'id');
     }
 }

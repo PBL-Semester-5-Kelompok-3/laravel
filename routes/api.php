@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AfterScanController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\InformatifController;
 use App\Http\Controllers\PestdeseaseController;
 use Illuminate\Http\Request;
@@ -17,6 +18,10 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::middleware('jwt.verify')->group(function () {
+    Route::get('/histories', [HistoryController::class, 'getAll']);
+    Route::get('/histories/user/{id_user}', [HistoryController::class, 'getByUser']);
+    Route::post('/histories', [HistoryController::class, 'store']);
+
     Route::put('/update-profile', [AuthController::class, 'updateProfile']);
     Route::post('/getAfterScan', [AfterScanController::class, 'getAfterScan']);
     // Route to get all informatifs

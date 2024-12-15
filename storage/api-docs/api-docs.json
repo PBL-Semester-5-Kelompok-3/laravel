@@ -583,6 +583,163 @@
                 ]
             }
         },
+        "/api/histories": {
+            "get": {
+                "tags": [
+                    "Histories"
+                ],
+                "summary": "Get all histories",
+                "description": "Returns a list of all histories.",
+                "operationId": "getAllHistories",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/History"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Histories"
+                ],
+                "summary": "Create a new history",
+                "description": "Creates a new history record and returns it.",
+                "operationId": "createHistory",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_user",
+                                    "id_disease",
+                                    "label"
+                                ],
+                                "properties": {
+                                    "id_user": {
+                                        "description": "ID of the user",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "id_disease": {
+                                        "description": "ID of the disease",
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "label": {
+                                        "description": "Label for the history",
+                                        "type": "string",
+                                        "example": "Example Label"
+                                    },
+                                    "image_path": {
+                                        "description": "Path to the image",
+                                        "type": "string",
+                                        "example": "/path/to/image.jpg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "History created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/History"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/histories/user/{id_user}": {
+            "get": {
+                "tags": [
+                    "Histories"
+                ],
+                "summary": "Get histories by user ID",
+                "description": "Returns a list of histories for a specific user.",
+                "operationId": "getHistoriesByUser",
+                "parameters": [
+                    {
+                        "name": "id_user",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/History"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "No histories found for this user"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/informatifs": {
             "get": {
                 "tags": [
@@ -1055,6 +1212,47 @@
     },
     "components": {
         "schemas": {
+            "History": {
+                "required": [
+                    "id_user",
+                    "id_disease",
+                    "label"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID of the history",
+                        "type": "integer"
+                    },
+                    "id_user": {
+                        "description": "ID of the user",
+                        "type": "integer"
+                    },
+                    "id_disease": {
+                        "description": "ID of the disease",
+                        "type": "integer"
+                    },
+                    "label": {
+                        "description": "Label of the history",
+                        "type": "string"
+                    },
+                    "image_path": {
+                        "description": "Path to the image",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the history was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the history was last updated",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "Informatif": {
                 "required": [
                     "id",
@@ -1104,6 +1302,10 @@
         {
             "name": "User",
             "description": "User"
+        },
+        {
+            "name": "Histories",
+            "description": "Histories"
         },
         {
             "name": "Informatif",

@@ -12,9 +12,9 @@ class PestdeseaseController extends Controller
      *
      * @OA\Get(
      *     path="/api/pests-and-diseases",
+     *     security={{"bearerAuth":{}}},
      *     tags={"PestAndDisease"},
      *     summary="Get all pests and diseases",
-     *     security={{"bearerAuth":{}}},
      *     @OA\Response(response=200, description="Successful operation")
      * )
      */
@@ -29,9 +29,9 @@ class PestdeseaseController extends Controller
      *
      * @OA\Post(
      *     path="/api/pests-and-diseases",
+     *     security={{"bearerAuth":{}}},
      *     tags={"PestAndDisease"},
      *     summary="Create a new pest or disease",
-     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -73,9 +73,9 @@ class PestdeseaseController extends Controller
      *
      * @OA\Get(
      *     path="/api/pests-and-diseases/{id}",
+     *     security={{"bearerAuth":{}}},
      *     tags={"PestAndDisease"},
      *     summary="Get a pest or disease by ID",
-     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
