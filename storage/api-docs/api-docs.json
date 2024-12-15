@@ -628,12 +628,13 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "id_user",
                                     "id_disease",
-                                    "label"
+                                    "label",
+                                    "image_path"
                                 ],
                                 "properties": {
                                     "id_user": {
@@ -646,15 +647,10 @@
                                         "type": "integer",
                                         "example": 2
                                     },
-                                    "label": {
-                                        "description": "Label for the history",
-                                        "type": "string",
-                                        "example": "Example Label"
-                                    },
                                     "image_path": {
-                                        "description": "Path to the image",
+                                        "description": "Uploaded image file",
                                         "type": "string",
-                                        "example": "/path/to/image.jpg"
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -1230,10 +1226,6 @@
                     "id_disease": {
                         "description": "ID of the disease",
                         "type": "integer"
-                    },
-                    "label": {
-                        "description": "Label of the history",
-                        "type": "string"
                     },
                     "image_path": {
                         "description": "Path to the image",

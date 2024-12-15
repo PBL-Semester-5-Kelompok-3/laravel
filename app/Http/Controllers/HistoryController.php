@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
  *     @OA\Property(property="id", type="integer", description="ID of the history"),
  *     @OA\Property(property="id_user", type="integer", description="ID of the user"),
  *     @OA\Property(property="id_disease", type="integer", description="ID of the disease"),
- *     @OA\Property(property="label", type="string", description="Label of the history"),
  *     @OA\Property(property="image_path", type="string", nullable=true, description="Path to the image"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the history was created"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", description="Timestamp when the history was last updated")
@@ -149,7 +148,6 @@ class HistoryController extends Controller
      *                 required={"id_user", "id_disease", "label", "image_path"},
      *                 @OA\Property(property="id_user", type="integer", example=1, description="ID of the user"),
      *                 @OA\Property(property="id_disease", type="integer", example=2, description="ID of the disease"),
-     *                 @OA\Property(property="label", type="string", example="Example Label", description="Label for the history"),
      *                 @OA\Property(property="image_path", type="string", format="binary", description="Uploaded image file")
      *             )
      *         )
@@ -179,7 +177,6 @@ class HistoryController extends Controller
         $validated = $request->validate([
             'id_user' => 'required|exists:users,id',
             'id_disease' => 'required|exists:diseases,id',
-            'label' => 'required|string',
             'image_path' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -197,7 +194,6 @@ class HistoryController extends Controller
         $history = History::create([
             'id_user' => $validated['id_user'],
             'id_disease' => $validated['id_disease'],
-            'label' => $validated['label'],
             'image_path' => $filePath,
         ]);
 

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_user')->constrained('users', 'id')->onDelete('cascade');
             $table->foreignId('id_disease')->constrained('diseases', 'id')->onDelete('cascade');
-            $table->string('label');
             $table->string('image_path')->nullable();
             $table->timestamps();
         });
