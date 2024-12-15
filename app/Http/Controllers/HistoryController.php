@@ -12,13 +12,67 @@ use Illuminate\Http\Request;
  * @OA\Schema(
  *     schema="History",
  *     type="object",
- *     required={"id_user", "id_disease", "label"},
+ *     required={"id", "id_user", "id_disease"},
  *     @OA\Property(property="id", type="integer", description="ID of the history"),
  *     @OA\Property(property="id_user", type="integer", description="ID of the user"),
  *     @OA\Property(property="id_disease", type="integer", description="ID of the disease"),
  *     @OA\Property(property="image_path", type="string", nullable=true, description="Path to the image"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the history was created"),
- *     @OA\Property(property="updated_at", type="string", format="date-time", description="Timestamp when the history was last updated")
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Timestamp when the history was last updated"),
+ *     @OA\Property(
+ *         property="user",
+ *         type="object",
+ *         description="Related user object",
+ *         @OA\Property(property="id", type="integer", description="ID of the user"),
+ *         @OA\Property(property="name", type="string", description="Name of the user")
+ *     ),
+ *     @OA\Property(
+ *         property="disease",
+ *         type="object",
+ *         description="Related disease object",
+ *         @OA\Property(property="id", type="integer", description="ID of the disease"),
+ *         @OA\Property(property="name", type="string", description="Name of the disease")
+ *     )
+ * )
+ */
+
+/**
+ * @OA\Schema(
+ *     schema="Schedule",
+ *     type="object",
+ *     required={"id", "id_disease", "description"},
+ *     @OA\Property(property="id", type="integer", description="ID of the schedule"),
+ *     @OA\Property(property="id_disease", type="integer", description="ID of the disease"),
+ *     @OA\Property(property="description", type="string", description="Description of the schedule"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the schedule was created"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Timestamp when the schedule was last updated")
+ * )
+ */
+
+/**
+ * @OA\Schema(
+ *     schema="Solution",
+ *     type="object",
+ *     required={"id", "id_disease", "title", "description"},
+ *     @OA\Property(property="id", type="integer", description="ID of the solution"),
+ *     @OA\Property(property="id_disease", type="integer", description="ID of the disease"),
+ *     @OA\Property(property="title", type="string", description="Title of the solution"),
+ *     @OA\Property(property="description", type="string", description="Detailed description of the solution"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the solution was created"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Timestamp when the solution was last updated")
+ * )
+ */
+
+/**
+ * @OA\Schema(
+ *     schema="Pest",
+ *     type="object",
+ *     required={"id", "id_disease", "name"},
+ *     @OA\Property(property="id", type="integer", description="ID of the pest"),
+ *     @OA\Property(property="id_disease", type="integer", description="ID of the disease"),
+ *     @OA\Property(property="name", type="string", description="Name of the pest"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the pest was created"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Timestamp when the pest was last updated")
  * )
  */
 class HistoryController extends Controller
@@ -69,6 +123,7 @@ class HistoryController extends Controller
                         'id' => $history->id,
                         'id_user' => $history->id_user,
                         'id_disease' => $history->id_disease,
+                        'disease_name' => $history->disease->name,
                         'image_path' => asset('storage/' . $history->image_path), // Path lengkap
                         'created_at' => $history->created_at,
                         'updated_at' => $history->updated_at,
@@ -168,6 +223,7 @@ class HistoryController extends Controller
                         'id' => $history->id,
                         'id_user' => $history->id_user,
                         'id_disease' => $history->id_disease,
+                        'disease_name' => $history->disease->name,
                         'image_path' => asset('storage/' . $history->image_path), // Full image path
                         'created_at' => $history->created_at,
                         'updated_at' => $history->updated_at,
