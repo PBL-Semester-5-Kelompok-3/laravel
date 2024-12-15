@@ -97,7 +97,7 @@ class HistoryController extends Controller
      *     operationId="getHistoriesByUser",
      *     tags={"Histories"},
      *     summary="Get histories by user ID",
-     *     description="Returns a list of histories for a specific user.",
+     *     description="Returns a list of histories for a specific user, including related schedules, solutions, and pests.",
      *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="id_user",
@@ -111,7 +111,24 @@ class HistoryController extends Controller
      *         description="Successful operation",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/History")
+     *             @OA\Items(
+     *                 @OA\Property(property="history", ref="#/components/schemas/History"),
+     *                 @OA\Property(
+     *                     property="schedule",
+     *                     type="array",
+     *                     @OA\Items(ref="#/components/schemas/Schedule")
+     *                 ),
+     *                 @OA\Property(
+     *                     property="solutions",
+     *                     type="array",
+     *                     @OA\Items(ref="#/components/schemas/Solution")
+     *                 ),
+     *                 @OA\Property(
+     *                     property="pest",
+     *                     type="array",
+     *                     @OA\Items(ref="#/components/schemas/Pest")
+     *                 ),
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -130,7 +147,7 @@ class HistoryController extends Controller
      */
     public function getByUser($id_user)
     {
-        $histories = History::with(['disease'])
+        $histories = History::with(['user', 'disease'])
             ->where('id_user', $id_user)
             ->get();
 
@@ -138,7 +155,49 @@ class HistoryController extends Controller
             return response()->json(['message' => 'No histories found for this user'], 404);
         }
 
-        return response()->json($histories, 200);
+        $result = [];
+        foreach ($histories as $history) {
+            if ($history->disease) {
+                // Ambil data jadwal, solusi, dan hama berdasarkan id_disease
+                $schedules = Schedule::where('id_disease', $history->disease->id)->get();
+                $solutions = Solution::where('id_disease', $history->disease->id)->get();
+                $pests = Pest::where('id_disease', $history->disease->id)->get();
+
+                $result[] = [
+                    'history' => [
+                        'id' => $history->id,
+                        'id_user' => $history->id_user,
+                        'id_disease' => $history->id_disease,
+                        'image_path' => asset('storage/' . $history->image_path), // Full image path
+                        'created_at' => $history->created_at,
+                        'updated_at' => $history->updated_at,
+                        'user' => $history->user,
+                        'disease' => $history->disease,
+                    ],
+                    'schedule' => $schedules,
+                    'solutions' => $solutions,
+                    'pest' => $pests,
+                ];
+            } else {
+                $result[] = [
+                    'history' => [
+                        'id' => $history->id,
+                        'id_user' => $history->id_user,
+                        'id_disease' => $history->id_disease,
+                        'image_path' => asset('storage/' . $history->image_path),
+                        'created_at' => $history->created_at,
+                        'updated_at' => $history->updated_at,
+                        'user' => $history->user,
+                        'disease' => null,
+                    ],
+                    'schedule' => null,
+                    'solutions' => null,
+                    'pest' => null,
+                ];
+            }
+        }
+
+        return response()->json($result, 200);
     }
 
     /**
