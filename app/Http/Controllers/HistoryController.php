@@ -143,12 +143,15 @@ class HistoryController extends Controller
      *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"id_user", "id_disease", "label"},
-     *             @OA\Property(property="id_user", type="integer", example=1, description="ID of the user"),
-     *             @OA\Property(property="id_disease", type="integer", example=2, description="ID of the disease"),
-     *             @OA\Property(property="label", type="string", example="Example Label", description="Label for the history"),
-     *             @OA\Property(property="image_path", type="string", example="/path/to/image.jpg", description="Path to the image")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"id_user", "id_disease", "label", "image_path"},
+     *                 @OA\Property(property="id_user", type="integer", example=1, description="ID of the user"),
+     *                 @OA\Property(property="id_disease", type="integer", example=2, description="ID of the disease"),
+     *                 @OA\Property(property="label", type="string", example="Example Label", description="Label for the history"),
+     *                 @OA\Property(property="image_path", type="string", format="binary", description="Uploaded image file")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -172,18 +175,30 @@ class HistoryController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi request
         $validated = $request->validate([
             'id_user' => 'required|exists:users,id',
             'id_disease' => 'required|exists:diseases,id',
             'label' => 'required|string',
-            'image_path' => 'nullable|string',
+            'image_path' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Simpan file gambar
+        if ($request->hasFile('image_path')) {
+            $file = $request->file('image_path');
+            $filePath = $file->store('histories', 'public'); // Simpan di folder 'public/histories'
+        } else {
+            return response()->json([
+                'message' => 'File upload failed. Please include a valid image file.',
+            ], 400);
+        }
+
+        // Buat entri history
         $history = History::create([
             'id_user' => $validated['id_user'],
             'id_disease' => $validated['id_disease'],
             'label' => $validated['label'],
-            'image_path' => $validated['image_path'] ?? null,
+            'image_path' => $filePath,
         ]);
 
         return response()->json([
