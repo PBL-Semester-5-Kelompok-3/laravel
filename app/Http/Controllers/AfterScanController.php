@@ -112,7 +112,6 @@ class AfterScanController extends Controller
             'disease' => $disease->name,
             'schedule' => $schedules->map(function ($schedule) {
                 return [
-                    'time' => $schedule->time,
                     'description' => $schedule->keterangan,
                 ];
             }),
