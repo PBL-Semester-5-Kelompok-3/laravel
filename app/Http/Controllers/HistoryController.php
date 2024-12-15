@@ -145,7 +145,7 @@ class HistoryController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"id_user", "id_disease", "label", "image_path"},
+     *                 required={"id_user", "id_disease", "image_path"},
      *                 @OA\Property(property="id_user", type="integer", example=1, description="ID of the user"),
      *                 @OA\Property(property="id_disease", type="integer", example=2, description="ID of the disease"),
      *                 @OA\Property(property="image_path", type="string", format="binary", description="Uploaded image file")

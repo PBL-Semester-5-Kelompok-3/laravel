@@ -633,7 +633,6 @@
                                 "required": [
                                     "id_user",
                                     "id_disease",
-                                    "label",
                                     "image_path"
                                 ],
                                 "properties": {
