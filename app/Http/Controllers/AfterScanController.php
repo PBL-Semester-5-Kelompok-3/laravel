@@ -110,6 +110,7 @@ class AfterScanController extends Controller
         // Prepare the JSON response
         return response()->json([
             'disease' => $disease->name,
+            'disease_id' => $disease->id,
             'schedule' => $schedules->map(function ($schedule) {
                 return [
                     'description' => $schedule->keterangan,
