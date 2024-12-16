@@ -102,6 +102,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'username' => $user->username,
                 'email' => $user->email,
+                'profile_picture' => $user->profile_picture ? asset('storage/' . $user->profile_picture) : null,
                 // Tambahkan atribut lain dari model pengguna sesuai kebutuhan
             ]]);
         }
@@ -358,6 +359,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'sometimes|string|max:255|unique:users,username,' . $user->id,
             'password' => 'sometimes|string|min:8',
+            'profile_picture' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:20480',
         ]);
 
         if ($validator->fails()) {
@@ -376,6 +378,11 @@ class AuthController extends Controller
             $user->password = Hash::make($request->password);
         }
 
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $path = $file->store('profile_pictures', 'public'); // Simpan ke folder "profile_pictures" di disk public
+            $user->profile_picture = $path; // Simpan path file ke database
+        }
         // Simpan perubahan
         $user->save();
 
@@ -385,6 +392,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'username' => $user->username,
                 'email' => $user->email,
+                'profile_picture' => $user->profile_picture ? asset('storage/' . $user->profile_picture) : null,
                 // Tambahkan atribut lain sesuai kebutuhan
             ]
         ], 200);
