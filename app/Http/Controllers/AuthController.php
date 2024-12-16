@@ -102,7 +102,6 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'username' => $user->username,
                 'email' => $user->email,
-                'profile_picture' => $user->profile_picture ? asset('storage/' . $user->profile_picture) : null,
                 // Tambahkan atribut lain dari model pengguna sesuai kebutuhan
             ]]);
         }
@@ -359,7 +358,6 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'sometimes|string|max:255|unique:users,username,' . $user->id,
             'password' => 'sometimes|string|min:8',
-            'profile_picture' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:20480',
         ]);
 
         if ($validator->fails()) {
@@ -378,11 +376,6 @@ class AuthController extends Controller
             $user->password = Hash::make($request->password);
         }
 
-        if ($request->hasFile('profile_picture')) {
-            $file = $request->file('profile_picture');
-            $path = $file->store('profile_pictures', 'public'); // Simpan ke folder "profile_pictures" di disk public
-            $user->profile_picture = $path; // Simpan path file ke database
-        }
         // Simpan perubahan
         $user->save();
 
@@ -392,73 +385,8 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'username' => $user->username,
                 'email' => $user->email,
-                'profile_picture' => $user->profile_picture ? asset('storage/' . $user->profile_picture) : null,
                 // Tambahkan atribut lain sesuai kebutuhan
             ]
         ], 200);
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/user/{id}",
-     *     tags={"User"},
-     *     summary="Get user by ID",
-     *     description="Retrieve user details based on their ID.",
-     *     security={{"bearerAuth": {}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="The ID of the user to retrieve",
-     *         @OA\Schema(
-     *             type="integer",
-     *             example=1
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="User details retrieved successfully.",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="username", type="string", example="JohnDoe"),
-     *             @OA\Property(property="email", type="string", example="johndoe@example.com")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="User not found.",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="message", type="string", example="User not found.")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="message", type="string", example="Unauthorized.")
-     *         )
-     *     )
-     * )
-     */
-    public function getUserById($id)
-    {
-        // Cari user berdasarkan ID
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found.'
-            ], 404);
-        }
-
-        return response()->json([
-            'id' => $user->id,
-            'username' => $user->username,
-            'email' => $user->email,
-            // Tambahkan properti lain jika diperlukan
-        ]);
     }
 }
